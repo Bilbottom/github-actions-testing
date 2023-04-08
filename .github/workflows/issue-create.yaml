@@ -64,5 +64,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: '?? Thanks for raising!\n\nThis issue has been automatically created in Jira, too. You can view it here:\n\n- ${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create-jira-issue.outputs.issue }}'
+            body: '👋 Thanks for raising!\n\nThis issue has been automatically created in Jira. You can view it here:\n\n- ${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create-jira-issue.outputs.issue }}'
           })
