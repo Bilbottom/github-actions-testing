@@ -53,9 +53,7 @@ jobs:
     - name: 💬 Comment on GitHub Issue
       uses: actions/github-script@v6
       env:
-        BODY: >
-          👋 Thanks for reporting!
-  
+        comment_body: >
           This issue has been automatically created in Jira, too. You can view
           it here:
           
@@ -66,5 +64,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: $BODY
+            body: '$comment_body'
           })
