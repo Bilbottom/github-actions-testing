@@ -1,0 +1,65 @@
+#  Validate the pull request details and comment on the corresponding Jira issue
+---
+name: pull-request-opened-actions
+run-name: Pull request opened actions
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+
+permissions:
+  issues: write
+
+jobs:
+  # Validate the pull request details
+  validate-pull-request:
+    name: Validate pull request
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🛎️ Checkout
+      uses: actions/checkout@master
+
+    - name: ✅ Review PR Title
+      uses: deepakputhraya/action-pr-title@master
+      with:
+        # Titles should be of the form:
+        #   JIRA-123: Some title
+        #   NOJIRA: Another title
+        regex: '^([A-Z]{2,10}-[0-9]+|NOJIRA): .+'
+        min_length: 10
+        max_length: 60
+
+  # Comment on the corresponding Jira issue
+  comment-on-jira-issue:
+    name: Comment on Jira issue
+    needs: [validate-pull-request]
+    if: github.event.pull_request.action == opened
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🛎️ Checkout
+      uses: actions/checkout@master
+
+    - name: 🔑 Jira Login
+      uses: atlassian/gajira-login@master
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+    - name: 🔍 Find Issue Key
+      id: find-issue-key
+      uses: atlassian/gajira-find-issue-key@v3
+      with:
+        string: ${{ github.event.pull_request.title }}
+
+    - name: 💬 Comment on Jira Ticket
+      uses: atlassian/gajira-comment@v3
+      if: ${{ steps.find-issue-key.outputs.issue }} != NOJIRA
+      with:
+        issue: ${{ steps.find-issue-key.outputs.issue }}
+        comment: |
+          A pull request has been opened for this ticket at:
+          - ${{ github.event.pull_request.html_url }}
