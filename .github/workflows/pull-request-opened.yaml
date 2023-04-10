@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: 🎤 Log current action
-      run: echo "The current action is ${{ github.event.action }}"
+      run: echo "The current action is '${{ github.event.action }}'"
 
     - name: ✅ Review PR Title
       uses: deepakputhraya/action-pr-title@master
