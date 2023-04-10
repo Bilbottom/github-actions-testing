@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: 🎤 Log current action
-      run: echo "The current action is ${{ github.event.pull_request.action }}"
+      run: echo "The current action is ${{ github.event.action }}"
 
     - name: ✅ Review PR Title
       uses: deepakputhraya/action-pr-title@master
@@ -39,7 +39,7 @@ jobs:
   comment-on-jira-issue:
     name: Comment on Jira issue
     needs: [validate-pull-request]
-    if: github.event.pull_request.action == 'opened'
+    if: github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
     - name: 🛎️ Checkout
