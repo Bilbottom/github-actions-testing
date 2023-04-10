@@ -36,7 +36,7 @@ jobs:
   comment-on-jira-issue:
     name: Comment on Jira issue
     needs: [validate-pull-request]
-    if: github.event.pull_request.action == opened
+    if: github.event.pull_request.action == 'opened'
     runs-on: ubuntu-latest
     steps:
     - name: 🛎️ Checkout
@@ -57,7 +57,7 @@ jobs:
 
     - name: 💬 Comment on Jira Ticket
       uses: atlassian/gajira-comment@v3
-      if: ${{ steps.find-issue-key.outputs.issue }} != NOJIRA
+      if: ${{ steps.find-issue-key.outputs.issue }} != 'NOJIRA'
       with:
         issue: ${{ steps.find-issue-key.outputs.issue }}
         comment: |
