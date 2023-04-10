@@ -22,6 +22,9 @@ jobs:
     - name: 🛎️ Checkout
       uses: actions/checkout@master
 
+    - name: 🎤 Log current action
+      run: echo "The current action is ${{ github.event.pull_request.action }}"
+
     - name: ✅ Review PR Title
       uses: deepakputhraya/action-pr-title@master
       with:
