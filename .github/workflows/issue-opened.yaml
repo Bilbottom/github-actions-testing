@@ -43,7 +43,7 @@ jobs:
           ${{ github.event.issue.body }}
 
     - name: 🎤 Log created issue
-      run: echo "Issue ${{ steps.create-jira-issue.outputs.issue }} was created"
+      run: echo "Issue ${{ steps.create-jira-ticket.outputs.issue }} was created"
 
     - name: 💬 Comment on GitHub Issue
       uses: actions/github-script@v6
@@ -52,7 +52,7 @@ jobs:
           This issue has been automatically created in Jira, too. You can view
           it here:
           
-          - ${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create-jira-issue.outputs.issue }}
+          - ${{ secrets.JIRA_BASE_URL }}browse/${{ steps.create-jira-ticket.outputs.issue }}
       with:
         script: |
           github.rest.issues.createComment({
